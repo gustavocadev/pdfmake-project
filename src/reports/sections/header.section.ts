@@ -15,22 +15,42 @@ interface HeaderOptions {
   showLogo?: boolean;
   showDate?: boolean;
 }
+const currentDate: Content = {
+  text: DateFormatter.getDDMMMMYYYY(new Date()),
+  alignment: "right",
+  margin: [20, 40],
+  width: 160,
+};
 
 export const headerSection = (options: HeaderOptions): Content => {
   const { title, subTitle, showLogo = true, showDate = true } = options;
 
   const headerLogo: Content | null = showLogo ? logo : null;
 
-  const headerDate: Content | null = showDate
+  const headerDate: Content | null = showDate ? currentDate : null;
+
+  const headerSubtitle: Content | null = subTitle
     ? {
-        text: DateFormatter.getDDMMMMYYYY(new Date()),
-        alignment: "right",
-        margin: [20, 20, 20, 20],
+        text: `${subTitle}`,
+        style: { bold: true, alignment: "center", fontSize: 16 },
       }
     : null;
 
   const headerTitle: Content | null = title
-    ? { text: title, style: { bold: true, alignment: "center" } }
+    ? {
+        stack: [
+          {
+            text: `${title}`,
+            style: {
+              bold: true,
+              alignment: "center",
+              fontSize: 22,
+            },
+            margin: [0, 15, 0, 0],
+          },
+          headerSubtitle,
+        ],
+      }
     : null;
 
   return {
